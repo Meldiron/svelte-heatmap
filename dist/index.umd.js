@@ -650,8 +650,10 @@
     	let { mouseLeave } = $$props;
 
     	const getEventData = event => {
-    		const { left: x, top: y } = event.target.getBoundingClientRect();
-    		return { ...data, pos: { x, y, size } };
+    		return {
+    			...data,
+    			pos: event.target.getBoundingClientRect
+    		};
     	};
 
     	const mouseOut = event => {
