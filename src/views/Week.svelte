@@ -7,6 +7,9 @@
             size={cellSize}
             value={day.value}
             y={day.date.getDay() * cellRect}
+            mouseLeave={day.mouseLeave}
+            mouseEnter={day.mouseEnter}
+            data={day.data}
         />
     {/each}
 </g>

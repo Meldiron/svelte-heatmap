@@ -1,5 +1,6 @@
 <g transform={`translate(${translation}, 0)`}>
     {#each days as day}
+        {JSON.stringify(day)}
         <Cell
             color={day.color}
             date={day.date}
@@ -8,6 +9,9 @@
             value={day.value}
             x={day.date.getDay() * cellRect}
             y={(getWeekIndex(day.date) * cellRect) + monthLabelHeight}
+            mouseLeave={day.mouseLeave}
+            mouseEnter={day.mouseEnter}
+            data={day.data}
         />
     {/each}
     {#if monthLabelHeight > 0}

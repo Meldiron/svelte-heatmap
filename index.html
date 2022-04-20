@@ -80,6 +80,15 @@
                     data.push({
                         date: date.toDate(),
                         value: rand(0, 4),
+                        data: {
+                            n: rand(1,100)
+                        },
+                        mouseLeave: (data) => {
+                            console.log("K", data);
+                        },
+                        mouseEnter: (data) => {
+                            console.log("L", data);
+                        }
                     });
 
                     date.add(1, 'day');

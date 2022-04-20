@@ -115,12 +115,17 @@ export function getCalendar({ colors, data, emptyColor, endDate, startDate, view
                 max = day.value;
             }
 
-            return day;
+            return {
+                ...data[offset],
+                ...day
+            };
         })
-        .map(({ date, value }) => {
+        .map((day) => {
+            const { date, value } = day;
+
             let color = getColor({ colors, max, value }) || emptyColor;
 
-            return { color, date, value }
+            return { ...day, color, date, value }
         });
 }
 
