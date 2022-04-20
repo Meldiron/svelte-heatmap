@@ -28,7 +28,7 @@ export let mouseLeave;
 const getEventData = (event) => {
     return {
         ...data,
-        pos: event.target.getBoundingClientRect
+        pos: event.target.getBoundingClientRect()
     }
 }
 

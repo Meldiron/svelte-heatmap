@@ -646,7 +646,7 @@ function instance($$self, $$props, $$invalidate) {
 	const getEventData = event => {
 		return {
 			...data,
-			pos: event.target.getBoundingClientRect
+			pos: event.target.getBoundingClientRect()
 		};
 	};
 
