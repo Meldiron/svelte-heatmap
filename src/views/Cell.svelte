@@ -26,11 +26,9 @@ export let mouseEnter;
 export let mouseLeave;
 
 const getEventData = (event) => {
-    const { left: x, top: y } = event.target.getBoundingClientRect();
-
     return {
         ...data,
-        pos: { x, y, size }
+        pos: event.target.getBoundingClientRect
     }
 }
 
