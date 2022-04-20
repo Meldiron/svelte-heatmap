@@ -30,7 +30,7 @@ const getEventData = (event) => {
 
     return {
         ...data,
-        pos: { x, y }
+        pos: { x, y, size }
     }
 }
 

@@ -651,7 +651,7 @@
 
     	const getEventData = event => {
     		const { left: x, top: y } = event.target.getBoundingClientRect();
-    		return { ...data, pos: { x, y } };
+    		return { ...data, pos: { x, y, size } };
     	};
 
     	const mouseOut = event => {
