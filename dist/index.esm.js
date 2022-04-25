@@ -474,7 +474,7 @@ function getCalendar({ colors, data, emptyColor, endDate, startDate, view }) {
 
     let max = 0;
     const startDayOfMonth = startDate.getDate();
-    const totalDays = Math.floor((endDate - startDate) / 86400000) + 1; // 86400000 = 1000 * 60 * 60 * 24
+    const totalDays = Math.round((endDate - startDate) / 86400000) + 1; // 86400000 = 1000 * 60 * 60 * 24
 
     return new Array(totalDays)
         .fill()

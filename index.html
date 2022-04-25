@@ -104,19 +104,6 @@
             const cellGap = Number(document.querySelector('#cellGap').value);
             const cellRadius = Number(document.querySelector('#cellRadius').value);
 
-            const weekly = new SvelteHeatmap({
-                props: {
-                    allowOverflow: true,
-                    cellGap: cellGap,
-                    cellRadius: cellRadius,
-                    data: fakeData,
-                    endDate: moment().toDate(),
-                    startDate: moment().subtract(1, 'year').toDate(),
-                    view: 'weekly',
-                },
-                target: document.querySelector('#weekly'),
-            });
-
             const monthly = new SvelteHeatmap({
                 props: {
                     allowOverflow: true,
@@ -126,8 +113,8 @@
                     data: fakeData,
                     emptyColor: '#ecedf0',
                     monthGap: 20,
-                    startDate: moment().subtract(5, 'months').toDate(),
-                    endDate: moment().toDate(),
+                    startDate: new Date("Tue Mar 01 2022 00:00:00 GMT+0100 (Central European Standard Time)"),
+                    endDate: new Date("Thu Mar 31 2022 23:59:59 GMT+0200 (Central European Summer Time)"),
                     view: 'monthly',
                 },
                 target: document.querySelector('#monthly'),
