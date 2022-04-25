@@ -482,8 +482,6 @@
         const startDayOfMonth = startDate.getDate();
         const totalDays = Math.floor((endDate - startDate) / 86400000) + 1; // 86400000 = 1000 * 60 * 60 * 24
 
-        const arr = new Array(totalDays).fill();
-
         return new Array(totalDays)
             .fill()
             .map((x, offset) => {
@@ -493,8 +491,16 @@
                     max = day.value;
                 }
 
+                const m1 = day.date.getTime();
+                const m2 = day.date.getTime() + 86400000;
+
+                const dayObj = data.find((d) => {
+                    const dT = d.date.getTime();
+                    return dT >= m1 && dT <= m2;
+                });
+
                 return {
-                    ...arr[offset],
+                    ...dayObj,
                     ...day
                 };
             })
@@ -584,8 +590,13 @@
     			? "cursor: pointer;"
     			: false);
 
+    			attr(path, "data-x", /*x*/ ctx[4]);
+    			attr(path, "data-x2", /*radius*/ ctx[2]);
     			attr(path, "fill", /*color*/ ctx[0]);
-    			attr(path, "d", path_d_value = `M${/*x*/ ctx[4] + /*radius*/ ctx[2]},${/*y*/ ctx[5]} h${/*svgSize*/ ctx[7]} v${/*svgSize*/ ctx[7]} q0,${/*radius*/ ctx[2]} -${/*radius*/ ctx[2]},${/*radius*/ ctx[2]} h-${/*svgSize*/ ctx[7]} v-${/*svgSize*/ ctx[7]} q0,-${/*radius*/ ctx[2]} ${/*radius*/ ctx[2]},-${/*radius*/ ctx[2]}`);
+
+    			attr(path, "d", path_d_value = /*x*/ ctx[4] && /*y*/ ctx[5]
+    			? `M${/*x*/ ctx[4] + /*radius*/ ctx[2]},${/*y*/ ctx[5]} h${/*svgSize*/ ctx[7]} v${/*svgSize*/ ctx[7]} q0,${/*radius*/ ctx[2]} -${/*radius*/ ctx[2]},${/*radius*/ ctx[2]} h-${/*svgSize*/ ctx[7]} v-${/*svgSize*/ ctx[7]} q0,-${/*radius*/ ctx[2]} ${/*radius*/ ctx[2]},-${/*radius*/ ctx[2]}`
+    			: "");
     		},
     		m(target, anchor) {
     			insert(target, path, anchor);
@@ -614,11 +625,21 @@
     				attr(path, "style", path_style_value);
     			}
 
+    			if (dirty & /*x*/ 16) {
+    				attr(path, "data-x", /*x*/ ctx[4]);
+    			}
+
+    			if (dirty & /*radius*/ 4) {
+    				attr(path, "data-x2", /*radius*/ ctx[2]);
+    			}
+
     			if (dirty & /*color*/ 1) {
     				attr(path, "fill", /*color*/ ctx[0]);
     			}
 
-    			if (dirty & /*x, radius, y, svgSize*/ 180 && path_d_value !== (path_d_value = `M${/*x*/ ctx[4] + /*radius*/ ctx[2]},${/*y*/ ctx[5]} h${/*svgSize*/ ctx[7]} v${/*svgSize*/ ctx[7]} q0,${/*radius*/ ctx[2]} -${/*radius*/ ctx[2]},${/*radius*/ ctx[2]} h-${/*svgSize*/ ctx[7]} v-${/*svgSize*/ ctx[7]} q0,-${/*radius*/ ctx[2]} ${/*radius*/ ctx[2]},-${/*radius*/ ctx[2]}`)) {
+    			if (dirty & /*x, y, radius, svgSize*/ 180 && path_d_value !== (path_d_value = /*x*/ ctx[4] && /*y*/ ctx[5]
+    			? `M${/*x*/ ctx[4] + /*radius*/ ctx[2]},${/*y*/ ctx[5]} h${/*svgSize*/ ctx[7]} v${/*svgSize*/ ctx[7]} q0,${/*radius*/ ctx[2]} -${/*radius*/ ctx[2]},${/*radius*/ ctx[2]} h-${/*svgSize*/ ctx[7]} v-${/*svgSize*/ ctx[7]} q0,-${/*radius*/ ctx[2]} ${/*radius*/ ctx[2]},-${/*radius*/ ctx[2]}`
+    			: "")) {
     				attr(path, "d", path_d_value);
     			}
     		},

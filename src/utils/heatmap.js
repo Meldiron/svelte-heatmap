@@ -106,8 +106,6 @@ export function getCalendar({ colors, data, emptyColor, endDate, startDate, view
     const startDayOfMonth = startDate.getDate();
     const totalDays = Math.floor((endDate - startDate) / 86400000) + 1; // 86400000 = 1000 * 60 * 60 * 24
 
-    const arr = new Array(totalDays).fill();
-
     return new Array(totalDays)
         .fill()
         .map((x, offset) => {
@@ -117,8 +115,16 @@ export function getCalendar({ colors, data, emptyColor, endDate, startDate, view
                 max = day.value;
             }
 
+            const m1 = day.date.getTime();
+            const m2 = day.date.getTime() + 86400000;
+
+            const dayObj = data.find((d) => {
+                const dT = d.date.getTime();
+                return dT >= m1 && dT <= m2;
+            });
+
             return {
-                ...arr[offset],
+                ...dayObj,
                 ...day
             };
         })

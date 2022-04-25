@@ -6,8 +6,11 @@
 
     style={data && data.hover ? "cursor: pointer;" : false}
 
+    data-x={x}
+    data-x2={radius}
+
     fill={color}
-    d={`M${x+radius},${y} h${svgSize} v${svgSize} q0,${radius} -${radius},${radius} h-${svgSize} v-${svgSize} q0,-${radius} ${radius},-${radius}`}
+    d={x && y ? `M${x+radius},${y} h${svgSize} v${svgSize} q0,${radius} -${radius},${radius} h-${svgSize} v-${svgSize} q0,-${radius} ${radius},-${radius}` : ''}
 />
 
 <script>
