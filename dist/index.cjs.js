@@ -478,6 +478,8 @@ function getCalendar({ colors, data, emptyColor, endDate, startDate, view }) {
     const startDayOfMonth = startDate.getDate();
     const totalDays = Math.floor((endDate - startDate) / 86400000) + 1; // 86400000 = 1000 * 60 * 60 * 24
 
+    const arr = new Array(totalDays).fill();
+
     return new Array(totalDays)
         .fill()
         .map((x, offset) => {
@@ -488,7 +490,7 @@ function getCalendar({ colors, data, emptyColor, endDate, startDate, view }) {
             }
 
             return {
-                ...data[offset],
+                ...arr[offset],
                 ...day
             };
         })
@@ -646,11 +648,15 @@ function instance($$self, $$props, $$invalidate) {
 	};
 
 	const mouseOut = event => {
-		mouseLeave(getEventData(event));
+		if (mouseLeave) {
+			mouseLeave(getEventData(event));
+		}
 	};
 
 	const mouseOver = event => {
-		mouseEnter(getEventData(event));
+		if (mouseEnter) {
+			mouseEnter(getEventData(event));
+		}
 	};
 
 	$$self.$$set = $$props => {
@@ -720,8 +726,6 @@ function get_each_context(ctx, list, i) {
 
 // (2:4) {#each days as day}
 function create_each_block(ctx) {
-	let t_value = JSON.stringify(/*day*/ ctx[13]) + "";
-	let t;
 	let cell;
 	let current;
 
@@ -742,16 +746,13 @@ function create_each_block(ctx) {
 
 	return {
 		c() {
-			t = text(t_value);
 			create_component(cell.$$.fragment);
 		},
 		m(target, anchor) {
-			insert(target, t, anchor);
 			mount_component(cell, target, anchor);
 			current = true;
 		},
 		p(ctx, dirty) {
-			if ((!current || dirty & /*days*/ 8) && t_value !== (t_value = JSON.stringify(/*day*/ ctx[13]) + "")) set_data(t, t_value);
 			const cell_changes = {};
 			if (dirty & /*days*/ 8) cell_changes.color = /*day*/ ctx[13].color;
 			if (dirty & /*days*/ 8) cell_changes.date = /*day*/ ctx[13].date;
@@ -775,13 +776,12 @@ function create_each_block(ctx) {
 			current = false;
 		},
 		d(detaching) {
-			if (detaching) detach(t);
 			destroy_component(cell, detaching);
 		}
 	};
 }
 
-// (17:4) {#if monthLabelHeight > 0}
+// (16:4) {#if monthLabelHeight > 0}
 function create_if_block(ctx) {
 	let text_1;
 	let t_value = /*monthLabels*/ ctx[8][/*days*/ ctx[3][0].date.getMonth()] + "";
@@ -865,7 +865,7 @@ function create_fragment$1(ctx) {
 			current = true;
 		},
 		p(ctx, [dirty]) {
-			if (dirty & /*days, cellRadius, cellSize, cellRect, getWeekIndex, monthLabelHeight, JSON*/ 143) {
+			if (dirty & /*days, cellRadius, cellSize, cellRect, getWeekIndex, monthLabelHeight*/ 143) {
 				each_value = /*days*/ ctx[3];
 				let i;
 

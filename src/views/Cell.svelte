@@ -34,9 +34,13 @@ const getEventData = (event) => {
 }
 
 const mouseOut = (event) => {
-    mouseLeave(getEventData(event));
+    if(mouseLeave) {
+        mouseLeave(getEventData(event));
+    }
 }
 const mouseOver = (event) => {
-    mouseEnter(getEventData(event));
+    if(mouseEnter) {
+        mouseEnter(getEventData(event));
+    }
 }
 </script>

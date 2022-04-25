@@ -106,6 +106,8 @@ export function getCalendar({ colors, data, emptyColor, endDate, startDate, view
     const startDayOfMonth = startDate.getDate();
     const totalDays = Math.floor((endDate - startDate) / 86400000) + 1; // 86400000 = 1000 * 60 * 60 * 24
 
+    const arr = new Array(totalDays).fill();
+
     return new Array(totalDays)
         .fill()
         .map((x, offset) => {
@@ -116,7 +118,7 @@ export function getCalendar({ colors, data, emptyColor, endDate, startDate, view
             }
 
             return {
-                ...data[offset],
+                ...arr[offset],
                 ...day
             };
         })

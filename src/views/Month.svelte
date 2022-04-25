@@ -1,6 +1,5 @@
 <g transform={`translate(${translation}, 0)`}>
     {#each days as day}
-        {JSON.stringify(day)}
         <Cell
             color={day.color}
             date={day.date}
@@ -29,7 +28,7 @@
 
 <script>
 import Cell from './Cell.svelte';
-import { getWeekIndex, stringifyDate } from '../utils/date';
+import { getWeekIndex } from '../utils/date';
 
 $: translation = (((7 * cellRect) - cellGap) + monthGap) * index;
 
