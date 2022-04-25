@@ -1,5 +1,12 @@
 # svelte-heatmap
 
+**Fork adds some functionality:**
+
+- Custom rounded corners
+- Hover effect option
+- mouse event passing
+- Offset days by 1 (sunday/monday view)
+
 [![Netlify](https://img.shields.io/netlify/4d4e781f-f953-4b8a-92c8-ad4ba986236e)](https://svelte-heatmap.netlify.app/)
 [![Build status](https://img.shields.io/github/workflow/status/scottbedard/svelte-heatmap/Test)](https://github.com/scottbedard/svelte-heatmap/actions)
 [![Dependencies](https://img.shields.io/david/scottbedard/svelte-heatmap)](https://david-dm.org/scottbedard/svelte-heatmap)
