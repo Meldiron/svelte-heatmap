@@ -10,7 +10,7 @@
     data-x2={radius}
 
     fill={color}
-    d={x && y ? `M${x+radius},${y} h${svgSize} v${svgSize} q0,${radius} -${radius},${radius} h-${svgSize} v-${svgSize} q0,-${radius} ${radius},-${radius}` : ''}
+    d={!isNaN(x) && !isNaN(y) ? `M${x+radius},${y} h${svgSize} v${svgSize} q0,${radius} -${radius},${radius} h-${svgSize} v-${svgSize} q0,-${radius} ${radius},-${radius}` : ''}
 />
 
 <script>

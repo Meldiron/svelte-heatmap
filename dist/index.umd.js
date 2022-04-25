@@ -336,7 +336,7 @@
      */
     function getWeekIndex(date) {
         const firstWeekday = new Date(date.getFullYear(), date.getMonth(), 1).getDay();
-        const offsetDate = date.getDate() + firstWeekday - 1;
+        const offsetDate = date.getDate() + firstWeekday - 2;
 
         return Math.floor(offsetDate / 7);
     }
@@ -594,7 +594,7 @@
     			attr(path, "data-x2", /*radius*/ ctx[2]);
     			attr(path, "fill", /*color*/ ctx[0]);
 
-    			attr(path, "d", path_d_value = /*x*/ ctx[4] && /*y*/ ctx[5]
+    			attr(path, "d", path_d_value = !isNaN(/*x*/ ctx[4]) && !isNaN(/*y*/ ctx[5])
     			? `M${/*x*/ ctx[4] + /*radius*/ ctx[2]},${/*y*/ ctx[5]} h${/*svgSize*/ ctx[7]} v${/*svgSize*/ ctx[7]} q0,${/*radius*/ ctx[2]} -${/*radius*/ ctx[2]},${/*radius*/ ctx[2]} h-${/*svgSize*/ ctx[7]} v-${/*svgSize*/ ctx[7]} q0,-${/*radius*/ ctx[2]} ${/*radius*/ ctx[2]},-${/*radius*/ ctx[2]}`
     			: "");
     		},
@@ -637,7 +637,7 @@
     				attr(path, "fill", /*color*/ ctx[0]);
     			}
 
-    			if (dirty & /*x, y, radius, svgSize*/ 180 && path_d_value !== (path_d_value = /*x*/ ctx[4] && /*y*/ ctx[5]
+    			if (dirty & /*x, y, radius, svgSize*/ 180 && path_d_value !== (path_d_value = !isNaN(/*x*/ ctx[4]) && !isNaN(/*y*/ ctx[5])
     			? `M${/*x*/ ctx[4] + /*radius*/ ctx[2]},${/*y*/ ctx[5]} h${/*svgSize*/ ctx[7]} v${/*svgSize*/ ctx[7]} q0,${/*radius*/ ctx[2]} -${/*radius*/ ctx[2]},${/*radius*/ ctx[2]} h-${/*svgSize*/ ctx[7]} v-${/*svgSize*/ ctx[7]} q0,-${/*radius*/ ctx[2]} ${/*radius*/ ctx[2]},-${/*radius*/ ctx[2]}`
     			: "")) {
     				attr(path, "d", path_d_value);
@@ -761,7 +761,7 @@
     				radius: /*cellRadius*/ ctx[0],
     				size: /*cellSize*/ ctx[2],
     				value: /*day*/ ctx[13].value,
-    				x: /*day*/ ctx[13].date.getDay() * /*cellRect*/ ctx[1],
+    				x: getCustomDay(/*day*/ ctx[13].date.getDay()) * /*cellRect*/ ctx[1],
     				y: getWeekIndex(/*day*/ ctx[13].date) * /*cellRect*/ ctx[1] + /*monthLabelHeight*/ ctx[7],
     				mouseLeave: /*day*/ ctx[13].mouseLeave,
     				mouseEnter: /*day*/ ctx[13].mouseEnter,
@@ -784,7 +784,7 @@
     			if (dirty & /*cellRadius*/ 1) cell_changes.radius = /*cellRadius*/ ctx[0];
     			if (dirty & /*cellSize*/ 4) cell_changes.size = /*cellSize*/ ctx[2];
     			if (dirty & /*days*/ 8) cell_changes.value = /*day*/ ctx[13].value;
-    			if (dirty & /*days, cellRect*/ 10) cell_changes.x = /*day*/ ctx[13].date.getDay() * /*cellRect*/ ctx[1];
+    			if (dirty & /*days, cellRect*/ 10) cell_changes.x = getCustomDay(/*day*/ ctx[13].date.getDay()) * /*cellRect*/ ctx[1];
     			if (dirty & /*days, cellRect, monthLabelHeight*/ 138) cell_changes.y = getWeekIndex(/*day*/ ctx[13].date) * /*cellRect*/ ctx[1] + /*monthLabelHeight*/ ctx[7];
     			if (dirty & /*days*/ 8) cell_changes.mouseLeave = /*day*/ ctx[13].mouseLeave;
     			if (dirty & /*days*/ 8) cell_changes.mouseEnter = /*day*/ ctx[13].mouseEnter;
@@ -890,7 +890,7 @@
     			current = true;
     		},
     		p(ctx, [dirty]) {
-    			if (dirty & /*days, cellRadius, cellSize, cellRect, getWeekIndex, monthLabelHeight*/ 143) {
+    			if (dirty & /*days, cellRadius, cellSize, getCustomDay, cellRect, getWeekIndex, monthLabelHeight*/ 143) {
     				each_value = /*days*/ ctx[3];
     				let i;
 
@@ -958,6 +958,16 @@
     			if (if_block) if_block.d();
     		}
     	};
+    }
+
+    function getCustomDay(day) {
+    	day -= 1;
+
+    	if (day === -1) {
+    		day = 6;
+    	}
+
+    	return day;
     }
 
     function instance$1($$self, $$props, $$invalidate) {

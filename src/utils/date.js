@@ -40,7 +40,7 @@ export function getWeekEnd(date) {
  */
 export function getWeekIndex(date) {
     const firstWeekday = new Date(date.getFullYear(), date.getMonth(), 1).getDay();
-    const offsetDate = date.getDate() + firstWeekday - 1;
+    const offsetDate = date.getDate() + firstWeekday - 2;
 
     return Math.floor(offsetDate / 7);
 }

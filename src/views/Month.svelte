@@ -6,7 +6,7 @@
             radius={cellRadius}
             size={cellSize}
             value={day.value}
-            x={day.date.getDay() * cellRect}
+            x={getCustomDay(day.date.getDay()) * cellRect}
             y={(getWeekIndex(day.date) * cellRect) + monthLabelHeight}
             mouseLeave={day.mouseLeave}
             mouseEnter={day.mouseEnter}
@@ -44,4 +44,14 @@ export let index;
 export let monthGap;
 export let monthLabelHeight;
 export let monthLabels;
+
+function getCustomDay(day) {
+    day -= 1;
+
+    if(day === -1) {
+        day = 6;
+    }
+
+    return day;
+}
 </script>
