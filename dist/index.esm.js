@@ -488,9 +488,11 @@ function getCalendar({ colors, data, emptyColor, endDate, startDate, view }) {
             const m1 = day.date.getTime();
             const m2 = day.date.getTime() + 86400000;
 
+            console.log(day.date);
+
             const dayObj = data.find((d) => {
                 const dT = d.date.getTime();
-                return dT >= m1 && dT <= m2;
+                return dT >= m1 && dT < m2;
             });
 
             return {
