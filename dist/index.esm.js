@@ -488,8 +488,6 @@ function getCalendar({ colors, data, emptyColor, endDate, startDate, view }) {
             const m1 = day.date.getTime();
             const m2 = day.date.getTime() + 86400000;
 
-            console.log(day.date);
-
             const dayObj = data.find((d) => {
                 const dT = d.date.getTime();
                 return dT >= m1 && dT < m2;
@@ -586,8 +584,6 @@ function create_fragment(ctx) {
 			? "cursor: pointer;"
 			: false);
 
-			attr(path, "data-x", /*x*/ ctx[4]);
-			attr(path, "data-x2", /*radius*/ ctx[2]);
 			attr(path, "fill", /*color*/ ctx[0]);
 
 			attr(path, "d", path_d_value = !isNaN(/*x*/ ctx[4]) && !isNaN(/*y*/ ctx[5])
@@ -600,7 +596,8 @@ function create_fragment(ctx) {
 			if (!mounted) {
 				dispose = [
 					listen(path, "mouseout", /*mouseOut*/ ctx[8]),
-					listen(path, "mouseover", /*mouseOver*/ ctx[9])
+					listen(path, "mouseover", /*mouseOver*/ ctx[9]),
+					listen(path, "click", /*onClick*/ ctx[10])
 				];
 
 				mounted = true;
@@ -619,14 +616,6 @@ function create_fragment(ctx) {
 			? "cursor: pointer;"
 			: false)) {
 				attr(path, "style", path_style_value);
-			}
-
-			if (dirty & /*x*/ 16) {
-				attr(path, "data-x", /*x*/ ctx[4]);
-			}
-
-			if (dirty & /*radius*/ 4) {
-				attr(path, "data-x2", /*radius*/ ctx[2]);
 			}
 
 			if (dirty & /*color*/ 1) {
@@ -660,6 +649,7 @@ function instance($$self, $$props, $$invalidate) {
 	let { data } = $$props;
 	let { mouseEnter } = $$props;
 	let { mouseLeave } = $$props;
+	let { mouseDown } = $$props;
 
 	const getEventData = event => {
 		return {
@@ -680,23 +670,30 @@ function instance($$self, $$props, $$invalidate) {
 		}
 	};
 
+	const onClick = event => {
+		if (mouseDown) {
+			mouseDown(getEventData(event));
+		}
+	};
+
 	$$self.$$set = $$props => {
 		if ("color" in $$props) $$invalidate(0, color = $$props.color);
 		if ("date" in $$props) $$invalidate(1, date = $$props.date);
 		if ("radius" in $$props) $$invalidate(2, radius = $$props.radius);
-		if ("size" in $$props) $$invalidate(10, size = $$props.size);
+		if ("size" in $$props) $$invalidate(11, size = $$props.size);
 		if ("value" in $$props) $$invalidate(3, value = $$props.value);
 		if ("x" in $$props) $$invalidate(4, x = $$props.x);
 		if ("y" in $$props) $$invalidate(5, y = $$props.y);
 		if ("data" in $$props) $$invalidate(6, data = $$props.data);
-		if ("mouseEnter" in $$props) $$invalidate(11, mouseEnter = $$props.mouseEnter);
-		if ("mouseLeave" in $$props) $$invalidate(12, mouseLeave = $$props.mouseLeave);
+		if ("mouseEnter" in $$props) $$invalidate(12, mouseEnter = $$props.mouseEnter);
+		if ("mouseLeave" in $$props) $$invalidate(13, mouseLeave = $$props.mouseLeave);
+		if ("mouseDown" in $$props) $$invalidate(14, mouseDown = $$props.mouseDown);
 	};
 
 	let svgSize;
 
 	$$self.$$.update = () => {
-		if ($$self.$$.dirty & /*size, radius*/ 1028) {
+		if ($$self.$$.dirty & /*size, radius*/ 2052) {
 			 $$invalidate(7, svgSize = size - radius);
 		}
 	};
@@ -712,9 +709,11 @@ function instance($$self, $$props, $$invalidate) {
 		svgSize,
 		mouseOut,
 		mouseOver,
+		onClick,
 		size,
 		mouseEnter,
-		mouseLeave
+		mouseLeave,
+		mouseDown
 	];
 }
 
@@ -726,13 +725,14 @@ class Cell extends SvelteComponent {
 			color: 0,
 			date: 1,
 			radius: 2,
-			size: 10,
+			size: 11,
 			value: 3,
 			x: 4,
 			y: 5,
 			data: 6,
-			mouseEnter: 11,
-			mouseLeave: 12
+			mouseEnter: 12,
+			mouseLeave: 13,
+			mouseDown: 14
 		});
 	}
 }
@@ -760,6 +760,7 @@ function create_each_block(ctx) {
 				x: getCustomDay(/*day*/ ctx[13].date.getDay()) * /*cellRect*/ ctx[1],
 				y: getWeekIndex(/*day*/ ctx[13].date) * /*cellRect*/ ctx[1] + /*monthLabelHeight*/ ctx[7],
 				mouseLeave: /*day*/ ctx[13].mouseLeave,
+				mouseDown: /*day*/ ctx[13].mouseDown,
 				mouseEnter: /*day*/ ctx[13].mouseEnter,
 				data: /*day*/ ctx[13].data
 			}
@@ -783,6 +784,7 @@ function create_each_block(ctx) {
 			if (dirty & /*days, cellRect*/ 10) cell_changes.x = getCustomDay(/*day*/ ctx[13].date.getDay()) * /*cellRect*/ ctx[1];
 			if (dirty & /*days, cellRect, monthLabelHeight*/ 138) cell_changes.y = getWeekIndex(/*day*/ ctx[13].date) * /*cellRect*/ ctx[1] + /*monthLabelHeight*/ ctx[7];
 			if (dirty & /*days*/ 8) cell_changes.mouseLeave = /*day*/ ctx[13].mouseLeave;
+			if (dirty & /*days*/ 8) cell_changes.mouseDown = /*day*/ ctx[13].mouseDown;
 			if (dirty & /*days*/ 8) cell_changes.mouseEnter = /*day*/ ctx[13].mouseEnter;
 			if (dirty & /*days*/ 8) cell_changes.data = /*day*/ ctx[13].data;
 			cell.$set(cell_changes);
@@ -802,7 +804,7 @@ function create_each_block(ctx) {
 	};
 }
 
-// (16:4) {#if monthLabelHeight > 0}
+// (17:4) {#if monthLabelHeight > 0}
 function create_if_block(ctx) {
 	let text_1;
 	let t_value = /*monthLabels*/ ctx[8][/*days*/ ctx[3][0].date.getMonth()] + "";
@@ -1064,6 +1066,7 @@ function create_each_block$1(ctx) {
 				value: /*day*/ ctx[7].value,
 				y: /*day*/ ctx[7].date.getDay() * /*cellRect*/ ctx[1],
 				mouseLeave: /*day*/ ctx[7].mouseLeave,
+				mouseDown: /*day*/ ctx[7].mouseDown,
 				mouseEnter: /*day*/ ctx[7].mouseEnter,
 				data: /*day*/ ctx[7].data
 			}
@@ -1086,6 +1089,7 @@ function create_each_block$1(ctx) {
 			if (dirty & /*days*/ 8) cell_changes.value = /*day*/ ctx[7].value;
 			if (dirty & /*days, cellRect*/ 10) cell_changes.y = /*day*/ ctx[7].date.getDay() * /*cellRect*/ ctx[1];
 			if (dirty & /*days*/ 8) cell_changes.mouseLeave = /*day*/ ctx[7].mouseLeave;
+			if (dirty & /*days*/ 8) cell_changes.mouseDown = /*day*/ ctx[7].mouseDown;
 			if (dirty & /*days*/ 8) cell_changes.mouseEnter = /*day*/ ctx[7].mouseEnter;
 			if (dirty & /*days*/ 8) cell_changes.data = /*day*/ ctx[7].data;
 			cell.$set(cell_changes);

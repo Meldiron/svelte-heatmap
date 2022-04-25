@@ -8,6 +8,7 @@
             value={day.value}
             y={day.date.getDay() * cellRect}
             mouseLeave={day.mouseLeave}
+            mouseDown={day.mouseDown}
             mouseEnter={day.mouseEnter}
             data={day.data}
         />

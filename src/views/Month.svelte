@@ -9,6 +9,7 @@
             x={getCustomDay(day.date.getDay()) * cellRect}
             y={(getWeekIndex(day.date) * cellRect) + monthLabelHeight}
             mouseLeave={day.mouseLeave}
+            mouseDown={day.mouseDown}
             mouseEnter={day.mouseEnter}
             data={day.data}
         />

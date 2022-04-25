@@ -3,12 +3,8 @@
     data-value={value}
     on:mouseout={mouseOut}
     on:mouseover={mouseOver}
-
+    on:click={onClick}
     style={data && data.hover ? "cursor: pointer;" : false}
-
-    data-x={x}
-    data-x2={radius}
-
     fill={color}
     d={!isNaN(x) && !isNaN(y) ? `M${x+radius},${y} h${svgSize} v${svgSize} q0,${radius} -${radius},${radius} h-${svgSize} v-${svgSize} q0,-${radius} ${radius},-${radius}` : ''}
 />
@@ -26,6 +22,7 @@ export let y;
 export let data;
 export let mouseEnter;
 export let mouseLeave;
+export let mouseDown;
 
 $: svgSize = size - (radius)
 
@@ -44,6 +41,12 @@ const mouseOut = (event) => {
 const mouseOver = (event) => {
     if(mouseEnter) {
         mouseEnter(getEventData(event));
+    }
+}
+
+const onClick = (event) => {
+    if(mouseDown) {
+        mouseDown(getEventData(event));
     }
 }
 </script>
