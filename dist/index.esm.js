@@ -332,7 +332,8 @@ function getWeekIndex(date) {
     const firstWeekday = new Date(date.getFullYear(), date.getMonth(), 1).getDay();
     const offsetDate = date.getDate() + firstWeekday - 2;
 
-    return Math.floor(offsetDate / 7);
+    const res = Math.floor(offsetDate / 7);
+    return firstWeekday === 0 ? res + 1 : res;
 }
 
 /**
